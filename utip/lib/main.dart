@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UTip',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF000000)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const UTip(),
     );
@@ -30,38 +30,37 @@ class UTip extends StatefulWidget {
 class _UTipState extends State<UTip> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var style = theme.textTheme.titleMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+      fontWeight: FontWeight.bold
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text('UTip'),
       ),
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        // textDirection: TextDirection.rtl,
-        // verticalDirection: VerticalDirection.down,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: const EdgeInsets.all(30),
+            // alignment:Cen,
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: theme.colorScheme.inversePrimary,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
               children: [
-
-                const Text(
+                 Text(
                   'Total per person', 
-                  style: TextStyle(
-                    fontSize: 20, color: Colors.white,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-                const Text(
-                  'Rs. 0.00', 
-                  style: TextStyle(
-                    fontSize: 20, color: Colors.white,
-                    fontWeight: FontWeight.bold
-                  )
+                  style: style
+                  ),
+                 Text(
+                  '₹ 0.00', 
+                    style: style.copyWith(
+                      fontSize: theme.textTheme.displaySmall!.fontSize
+                    )
                 ),
               ],
             )
