@@ -65,6 +65,96 @@ class _UTipState extends State<UTip> {
               ],
             )
           ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: theme.colorScheme.inversePrimary,
+                width: 2
+              ),
+              // color: theme.colorScheme.inversePrimary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                // Text(
+                //   'Bill Amount',
+                //   style: style.copyWith(
+                //     color: theme.colorScheme.onSurfaceVariant
+                //   )
+                // ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter bill amount',
+                    prefixIcon: Icon(Icons.currency_rupee),
+                    labelText: 'Bill Amount'
+                  ),
+                  onChanged: (String amount) {
+                    // print('Bill amount changed: $amount');
+                    // Handle bill amount change
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Split',
+                      style: style.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant
+                      )
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {}, 
+                          icon: const Icon(Icons.remove)
+                        ),
+                        const Text('1'),
+                        IconButton(
+                          onPressed: () {}, 
+                          icon: const Icon(Icons.add)
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Tip',
+                      style: style.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant
+                      )
+                    ),
+                    Text(
+                      '₹ 0.00',
+                      style: style.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant
+                      )
+                    ),
+                  ],
+                ),
+                Text(
+                  '10%',
+                  style: style.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant
+                  )
+                ),
+                Slider(
+                  value: 10,
+                  min: 0,
+                  max: 100,
+                  divisions: 10,
+                  label: '10%',
+                  onChanged: (value) {},
+                )
+              ]
+            ),
+          )
         ],
       ),
     );
