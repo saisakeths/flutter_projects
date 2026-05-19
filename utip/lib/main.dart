@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:utip/widgets/bill_amount_field.dart';
+import 'package:utip/widgets/person_counter.dart';
+import 'package:utip/widgets/tip_slider.dart';
+import 'package:utip/widgets/total_per_person.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +32,23 @@ class UTip extends StatefulWidget {
 }
 
 class _UTipState extends State<UTip> {
+  int counter = 1;
+  double tipPercent = 0.0;
+  var billAmount = 0.0;
+  double tip = 0.0;
+  var totalPerPerson = 0.0;
+  void increment(){
+    setState(() => counter++);
+  }
+  void decrement(){
+    setState(() {
+      if (counter > 1) {
+        counter--;
+      }
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -35,6 +56,11 @@ class _UTipState extends State<UTip> {
       color: theme.colorScheme.onPrimary,
       fontWeight: FontWeight.bold
     );
+    tip = (tipPercent / 100) * billAmount;
+    tip = double.parse(tip.toStringAsFixed(2));
+    totalPerPerson = (billAmount + tip) / counter;
+    totalPerPerson = double.parse(totalPerPerson.toStringAsFixed(2));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('UTip'),
@@ -42,29 +68,7 @@ class _UTipState extends State<UTip> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            // alignment:Cen,
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.inversePrimary,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                 Text(
-                  'Total per person', 
-                  style: style
-                  ),
-                 Text(
-                  '₹ 0.00', 
-                    style: style.copyWith(
-                      fontSize: theme.textTheme.displaySmall!.fontSize
-                    )
-                ),
-              ],
-            )
-          ),
+          TotalPerPerson(theme: theme, style: style, totalPerPerson: totalPerPerson),
           Container(
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
@@ -73,30 +77,13 @@ class _UTipState extends State<UTip> {
                 color: theme.colorScheme.inversePrimary,
                 width: 2
               ),
-              // color: theme.colorScheme.inversePrimary,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
               children: [
-                // Text(
-                //   'Bill Amount',
-                //   style: style.copyWith(
-                //     color: theme.colorScheme.onSurfaceVariant
-                //   )
-                // ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter bill amount',
-                    prefixIcon: Icon(Icons.currency_rupee),
-                    labelText: 'Bill Amount'
-                  ),
-                  onChanged: (String amount) {
-                    // print('Bill amount changed: $amount');
-                    // Handle bill amount change
-                  },
-                ),
+                BillAmountField(billAmount: billAmount.toString(), onChanged: (value) {
+                  setState(() => billAmount = double.tryParse(value) ?? 0.0);
+                }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -106,19 +93,7 @@ class _UTipState extends State<UTip> {
                         color: theme.colorScheme.onSurfaceVariant
                       )
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {}, 
-                          icon: const Icon(Icons.remove)
-                        ),
-                        const Text('1'),
-                        IconButton(
-                          onPressed: () {}, 
-                          icon: const Icon(Icons.add)
-                        ),
-                      ],
-                    ),
+                    PersonCounter(theme: theme, counter: counter, onIncrement: increment, onDecrement: decrement),
                   ],
                 ),
                 Row(
@@ -126,32 +101,21 @@ class _UTipState extends State<UTip> {
                   children: [
                     Text(
                       'Tip',
-                      style: style.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant
-                      )
+                      style: theme.textTheme.titleMedium
                     ),
                     Text(
-                      '₹ 0.00',
-                      style: style.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant
-                      )
+                      '₹ $tip',
+                      style: theme.textTheme.titleMedium
                     ),
                   ],
                 ),
                 Text(
-                  '10%',
-                  style: style.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant
-                  )
+                  '$tipPercent %',
+                  style: theme.textTheme.titleMedium
                 ),
-                Slider(
-                  value: 10,
-                  min: 0,
-                  max: 100,
-                  divisions: 10,
-                  label: '10%',
-                  onChanged: (value) {},
-                )
+                TipSlider(tipPercent: tipPercent, onChanged: (value) {
+                  setState(() => tipPercent = value);
+                })
               ]
             ),
           )
@@ -160,4 +124,3 @@ class _UTipState extends State<UTip> {
     );
   }
 }
-
